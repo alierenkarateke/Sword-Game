@@ -983,22 +983,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2571270572009868822, guid: ab680fdb92f521c47b490e47f8f732f2, type: 3}
-      propertyPath: m_DefaultControlScheme
-      value: Gamepad
-      objectReference: {fileID: 0}
-    - target: {fileID: 2571270572009868822, guid: ab680fdb92f521c47b490e47f8f732f2, type: 3}
-      propertyPath: m_ActionEvents.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2571270572009868822, guid: ab680fdb92f521c47b490e47f8f732f2, type: 3}
-      propertyPath: m_ActionEvents.Array.data[2].m_ActionId
-      value: 46006844-4187-4953-8665-05a69b7d67bf
-      objectReference: {fileID: 0}
-    - target: {fileID: 2571270572009868822, guid: ab680fdb92f521c47b490e47f8f732f2, type: 3}
-      propertyPath: m_ActionEvents.Array.data[2].m_ActionName
-      value: 'Player/Dodge[/Keyboard/g,/Keyboard/comma,/XInputControllerWindows/buttonSouth]'
-      objectReference: {fileID: 0}
     - target: {fileID: 9084806130436245847, guid: ab680fdb92f521c47b490e47f8f732f2, type: 3}
       propertyPath: m_Name
       value: Player 2

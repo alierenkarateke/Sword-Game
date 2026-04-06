@@ -15,7 +15,7 @@ public class HitBoxController : MonoBehaviour
             if(stats != null && !playerController.isDodging)
             {
                 Debug.Log("Hit !!!");
-                stats.TakeDamge(damage);
+                stats.TakeDamge(damage,stats.eTag);
             }
             
         }

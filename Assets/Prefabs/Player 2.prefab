@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 9ba1ed6d66aa0bc42b095b66ac8fc022, type: 3}
-  m_NotificationBehavior: 2
+  m_NotificationBehavior: 3
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -363,6 +363,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 04e4c475-c366-4842-af0b-f4a19676d149
     m_ActionName: 'Player/Attack[/Keyboard/f,/Keyboard/0,/XInputControllerWindows/buttonWest]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 46006844-4187-4953-8665-05a69b7d67bf
+    m_ActionName: 'Player/Dodge[/Keyboard/g,/Keyboard/comma,/XInputControllerWindows/buttonSouth]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -416,3 +420,4 @@ MonoBehaviour:
   maxHealth: 100
   currentStamina: 75
   maxStamina: 75
+  eTag: Player2
