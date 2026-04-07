@@ -75,6 +75,7 @@ public class PlayerController : MonoBehaviour
         }
         
         yield return new WaitForSeconds(dodgeTime);
+        rb.linearVelocity = Vector3.zero;
         isDodging = false;
     }
 

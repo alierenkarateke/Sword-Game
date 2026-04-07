@@ -319,6 +319,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3397628445740134577, guid: 043a96c92a995534abbfda5e7d1485bb, type: 3}
+      propertyPath: attackCoolDown
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3397628445740134577, guid: 043a96c92a995534abbfda5e7d1485bb, type: 3}
+      propertyPath: hitBoxDuration
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 5095026218959560389, guid: 043a96c92a995534abbfda5e7d1485bb, type: 3}
       propertyPath: moveSpeed
       value: 10
@@ -326,6 +334,14 @@ PrefabInstance:
     - target: {fileID: 5095026218959560389, guid: 043a96c92a995534abbfda5e7d1485bb, type: 3}
       propertyPath: rotationSpeed
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6364152995472812575, guid: 043a96c92a995534abbfda5e7d1485bb, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6364152995472812575, guid: 043a96c92a995534abbfda5e7d1485bb, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9084806130436245847, guid: 043a96c92a995534abbfda5e7d1485bb, type: 3}
       propertyPath: m_Name

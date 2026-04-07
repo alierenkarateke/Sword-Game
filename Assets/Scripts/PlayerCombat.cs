@@ -12,6 +12,7 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField] GameObject hitBoxTrigger;
 
+    private Animator animator;
     private Rigidbody rb;
     private PlayerInput playerInput;
     private InputAction attackAction;
@@ -26,6 +27,7 @@ public class PlayerCombat : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
+        animator = GetComponentInChildren<Animator>();
 
         attackAction = playerInput.actions["Attack"];
     }
@@ -40,6 +42,7 @@ public class PlayerCombat : MonoBehaviour
 
     IEnumerator ActivateHitBox()
     {
+        animator.SetTrigger("attackTrigger");
         isAttacking = true;
         hitBoxTrigger.SetActive(true);
         yield return new WaitForSeconds(hitBoxDuration);
