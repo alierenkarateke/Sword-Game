@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(PlayerInput))]
+//[RequireComponent(typeof(Animator))]
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float dodgeForce;
 
     
-
+    private Animator animator;
     private Rigidbody rb;
     private PlayerInput playerInput;
     private InputAction moveAction;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
+        animator = GetComponentInChildren<Animator>();
 
         moveAction = playerInput.actions["Move"];
         dodgeAction = playerInput.actions["Dodge"];
@@ -57,6 +59,7 @@ public class PlayerController : MonoBehaviour
 
             rb.MoveRotation(targetRotation);
         }
+        animator.SetBool("isMoving", moveDir != Vector3.zero);
     }
 
     IEnumerator DodgeCoroutine()
