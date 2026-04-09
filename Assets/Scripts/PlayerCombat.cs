@@ -12,6 +12,8 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField] GameObject hitBoxTrigger;
 
+    HitBoxController hitBoxController;
+
     private Animator animator;
     private Rigidbody rb;
     private PlayerInput playerInput;
@@ -28,6 +30,8 @@ public class PlayerCombat : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
         animator = GetComponentInChildren<Animator>();
+        
+        hitBoxController = hitBoxTrigger.GetComponent<HitBoxController>();
 
         attackAction = playerInput.actions["Attack"];
     }
@@ -42,9 +46,10 @@ public class PlayerCombat : MonoBehaviour
 
     IEnumerator ActivateHitBox()
     {
-        animator.SetTrigger("attackTrigger");
         isAttacking = true;
+        hitBoxController.hasDamaged = false;
         hitBoxTrigger.SetActive(true);
+        animator.SetTrigger("attackTrigger");
         yield return new WaitForSeconds(hitBoxDuration);
         hitBoxTrigger.SetActive(false);
         yield return new WaitForSeconds(attackCoolDown);

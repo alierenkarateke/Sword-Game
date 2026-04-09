@@ -64,16 +64,18 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator DodgeCoroutine()
     {
+        //animator.SetTrigger("dodgeTrigger");
         isDodging = true;
         if(moveDir != Vector3.zero)
         {
             rb.AddForce(moveDir * dodgeForce, ForceMode.VelocityChange);    
         }
+        /*
         else
         {
             rb.AddForce(-transform.forward * dodgeForce, ForceMode.VelocityChange);
         }
-        
+        */
         yield return new WaitForSeconds(dodgeTime);
         rb.linearVelocity = Vector3.zero;
         isDodging = false;
