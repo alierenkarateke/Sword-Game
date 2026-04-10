@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -15,12 +16,16 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] public Color hitFlashColor;
     [SerializeField] Renderer[] meshRenderer;
 
+    [SerializeField] private Slider healthBar;
+
     Color[] originalColors;
 
     void Start()
     {
         currentHealth = maxHealth;
-    currentStamina = maxStamina;
+        currentStamina = maxStamina;
+        
+        healthBar.value = 1f;
 
     // tüm materialleri say
     int totalMaterials = 0;
@@ -39,6 +44,7 @@ public class PlayerStats : MonoBehaviour
     {
         StartCoroutine(hitFlash());
         currentHealth -= damage;
+        healthBar.value = currentHealth / maxHealth;
         Debug.Log(tag + " current health = " + currentHealth);
         if(currentHealth <= 0)
         {
