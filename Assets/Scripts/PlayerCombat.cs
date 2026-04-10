@@ -47,7 +47,6 @@ public class PlayerCombat : MonoBehaviour
     IEnumerator ActivateHitBox()
     {
         isAttacking = true;
-        hitBoxController.hasDamaged = false;
         hitBoxTrigger.SetActive(true);
         animator.SetTrigger("attackTrigger");
         yield return new WaitForSeconds(hitBoxDuration);
