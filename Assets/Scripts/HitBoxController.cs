@@ -36,6 +36,9 @@ public class HitBoxController : MonoBehaviour
     {
         Time.timeScale = 0.05f;
         yield return new WaitForSecondsRealtime(duration);
-        Time.timeScale = 1.0f;
+        if (!GameManager.Instance.matchOver)
+        {
+            Time.timeScale = 1.0f;
+        }  
     }
 }

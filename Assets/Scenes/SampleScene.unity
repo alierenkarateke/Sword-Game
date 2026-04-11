@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 217473205}
   - component: {fileID: 217473206}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: P2Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,11 +158,11 @@ RectTransform:
   - {fileID: 1387721206}
   m_Father: {fileID: 1313611442}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 20}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -3, y: -2}
+  m_SizeDelta: {x: 80, y: 20}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &217473206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,18 +202,23 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1218704642}
   m_FillRect: {fileID: 806063722}
   m_HandleRect: {fileID: 1218704641}
-  m_Direction: 0
+  m_Direction: 1
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &222262436 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6531087225404927066, guid: ab680fdb92f521c47b490e47f8f732f2, type: 3}
+  m_PrefabInstance: {fileID: 1902449845}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,7 +738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.12156863, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1242,7 +1247,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -5, y: 0}
+  m_AnchoredPosition: {x: 5, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1218704640
@@ -1347,7 +1352,7 @@ RectTransform:
   m_GameObject: {fileID: 1313611441}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 217473205}
@@ -1396,6 +1401,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313611441}
   m_CullTransparentMesh: 1
+--- !u!1 &1379782703 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9084806130436245847, guid: 043a96c92a995534abbfda5e7d1485bb, type: 3}
+  m_PrefabInstance: {fileID: 509143766}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1387721205
 GameObject:
   m_ObjectHideFlags: 0
@@ -1441,6 +1451,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1406915411}
+  - component: {fileID: 1406915412}
   m_Layer: 0
   m_Name: GM
   m_TagString: Untagged
@@ -1465,6 +1476,21 @@ Transform:
   - {fileID: 467165458}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1406915412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406915409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f8e3effb7b01247a05403d403989a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalRound: 3
+  player1: {fileID: 1379782703}
+  player2: {fileID: 222262436}
 --- !u!1 &1549939216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1742,7 +1768,7 @@ RectTransform:
   m_GameObject: {fileID: 1652324111}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1865330687}
@@ -1877,7 +1903,7 @@ GameObject:
   - component: {fileID: 1865330687}
   - component: {fileID: 1865330688}
   m_Layer: 5
-  m_Name: Health
+  m_Name: P1Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1952,7 +1978,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

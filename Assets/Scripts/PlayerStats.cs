@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,8 +21,11 @@ public class PlayerStats : MonoBehaviour
 
     Color[] originalColors;
 
+    private Vector3 startPosition; 
+
     void Start()
     {
+        startPosition = transform.position;
         currentHealth = maxHealth;
         currentStamina = maxStamina;
         
@@ -48,21 +52,34 @@ public class PlayerStats : MonoBehaviour
         Debug.Log(tag + " current health = " + currentHealth);
         if(currentHealth <= 0)
         {
-            Destroy(gameObject);
+            GameManager.Instance.playerDied(eTag);
         }
     }
 
-     IEnumerator hitFlash()
+    public void resetPlayer()
+    {
+     currentHealth = maxHealth;
+     healthBar.value = 1f;
+     transform.position = startPosition;   
+    }
+
+    IEnumerator hitFlash()
+    {
+        foreach(Renderer r in meshRenderer)
         {
-            foreach(Renderer r in meshRenderer)
-        foreach(Material mat in r.materials)
-            mat.color = hitFlashColor;
+            foreach(Material mat in r.materials)
+               mat.color = hitFlashColor;
+        }
 
     yield return new WaitForSeconds(hitFlashDuration);
-
     int index = 0;
-    foreach(Renderer r in meshRenderer)
-        foreach(Material mat in r.materials)
-            mat.color = originalColors[index++];
+        foreach(Renderer r in meshRenderer)
+        {
+            foreach(Material mat in r.materials)
+               mat.color = originalColors[index++];
         }
+            
+    }
+
+
 }
