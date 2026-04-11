@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float dodgeTime;
     [SerializeField] public float dodgeForce;
 
-    
+    public bool isActive;
     private Animator animator;
     private Rigidbody rb;
     private PlayerInput playerInput;
@@ -25,6 +25,12 @@ public class PlayerController : MonoBehaviour
     public bool isDodging = false;
 
     Vector3 moveDir;
+
+    void Awake()
+    {
+        isActive = true;
+    }
+    
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -37,6 +43,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if(!isActive) return;
+
          if (dodgeAction.WasPressedThisFrame() && !isDodging)
         {
             StartCoroutine(DodgeCoroutine());
@@ -45,6 +53,8 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(!isActive) return;
+        
         moveInput = moveAction.ReadValue<Vector2>();
 
         moveDir = new Vector3(moveInput.x, 0, moveInput.y);

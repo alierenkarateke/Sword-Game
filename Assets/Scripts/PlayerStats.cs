@@ -21,7 +21,7 @@ public class PlayerStats : MonoBehaviour
 
     Color[] originalColors;
 
-    private Vector3 startPosition; 
+    [SerializeField] private Vector3 startPosition; 
 
     void Start()
     {
@@ -46,10 +46,10 @@ public class PlayerStats : MonoBehaviour
 
     public void TakeDamge(float damage, string tag)
     {
-        StartCoroutine(hitFlash());
         currentHealth -= damage;
         healthBar.value = currentHealth / maxHealth;
-        Debug.Log(tag + " current health = " + currentHealth);
+        // Debug.Log(tag + " current health = " + currentHealth);
+        StartCoroutine(hitFlash());
         if(currentHealth <= 0)
         {
             GameManager.Instance.playerDied(eTag);

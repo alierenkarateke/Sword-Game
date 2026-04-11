@@ -14,6 +14,7 @@ public class PlayerCombat : MonoBehaviour
 
     HitBoxController hitBoxController;
 
+    public bool isActive;
     private Animator animator;
     private Rigidbody rb;
     private PlayerInput playerInput;
@@ -23,6 +24,7 @@ public class PlayerCombat : MonoBehaviour
     void Awake()
     {
         hitBoxTrigger.SetActive(false);
+        isActive = true;
     }
     
     void Start()
@@ -38,6 +40,8 @@ public class PlayerCombat : MonoBehaviour
 
     void Update()
     {
+        if(!isActive) return;
+        
         if (attackAction.WasPressedThisFrame() && !isAttacking)
         {
             StartCoroutine(ActivateHitBox());
@@ -46,9 +50,9 @@ public class PlayerCombat : MonoBehaviour
 
     IEnumerator ActivateHitBox()
     {
+        animator.SetTrigger("attackTrigger");
         isAttacking = true;
         hitBoxTrigger.SetActive(true);
-        animator.SetTrigger("attackTrigger");
         yield return new WaitForSeconds(hitBoxDuration);
         hitBoxTrigger.SetActive(false);
         yield return new WaitForSeconds(attackCoolDown);

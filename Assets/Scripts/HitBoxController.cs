@@ -23,7 +23,7 @@ public class HitBoxController : MonoBehaviour
             PlayerController playerController = other.GetComponent<PlayerController>();
             if(stats != null && !playerController.isDodging)
             {
-                Debug.Log("Hit !!!");
+                //Debug.Log("Hit !!!");
                 StartCoroutine(doHitStop(hitStopDuration));
                 StartCoroutine(CameraShake.Instance.Shake(0.1f, 0.05f));
                 stats.TakeDamge(damage,stats.eTag);
