@@ -102,6 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownerTag: Player2
   damage: 15
+  hitStopDuration: 0.05
 --- !u!33 &4335156178442108828
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -117,7 +118,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5673100351419615803}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -274,7 +275,7 @@ MonoBehaviour:
     m_ActionId: d28f07a0-c1ec-41fc-8c58-3ea8430a2b96
     m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Gamepad
+  m_DefaultControlScheme: Keyboard Right
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -294,6 +295,7 @@ MonoBehaviour:
   rotationSpeed: 10
   dodgeTime: 0.5
   dodgeForce: 5
+  isActive: 0
   isDodging: 0
 --- !u!114 &8429699245470734058
 MonoBehaviour:
@@ -310,6 +312,7 @@ MonoBehaviour:
   hitBoxDuration: 0.2
   attackCoolDown: 0.3
   hitBoxTrigger: {fileID: 5673100351419615803}
+  isActive: 0
 --- !u!114 &1738963789190802731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,6 +330,13 @@ MonoBehaviour:
   currentStamina: 75
   maxStamina: 75
   eTag: Player2
+  hitFlashDuration: 0.2
+  hitFlashColor: {r: 1, g: 1, b: 1, a: 0}
+  meshRenderer:
+  - {fileID: 6546412235453211195}
+  - {fileID: 1839680460459182246}
+  healthBar: {fileID: 0}
+  startPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &5280763120922942597
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -419,6 +429,11 @@ PrefabInstance:
       addedObject: {fileID: 5962345736749123055}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1eec999ad36f00145862fc0a1df3997d, type: 3}
+--- !u!137 &1839680460459182246 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5822821947120931875, guid: 1eec999ad36f00145862fc0a1df3997d, type: 3}
+  m_PrefabInstance: {fileID: 5280763120922942597}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5675577219291102062 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1eec999ad36f00145862fc0a1df3997d, type: 3}
@@ -427,6 +442,11 @@ Transform:
 --- !u!4 &5835722690198217549 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 1eec999ad36f00145862fc0a1df3997d, type: 3}
+  m_PrefabInstance: {fileID: 5280763120922942597}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6546412235453211195 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7813590141776298306, guid: 1eec999ad36f00145862fc0a1df3997d, type: 3}
   m_PrefabInstance: {fileID: 5280763120922942597}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6139594481592328708

@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI player1Score;
     [SerializeField] private TextMeshProUGUI player2Score;
     [SerializeField] public TextMeshProUGUI winner;
+    [SerializeField] private GameObject endScreen;
 
     public bool isRoundActive;
     private int player1Wins = 0;
@@ -60,6 +61,7 @@ public class GameManager : MonoBehaviour
 
         if(player2Wins >= winsNeeded)
         {
+            endScreen.SetActive(true);
             //Debug.Log("Player 2 Win Whe Match!");
             winner.text = "Player 2 Win Whe Match!";
             StartCoroutine(winnerText());
@@ -70,6 +72,7 @@ public class GameManager : MonoBehaviour
         
         if(player1Wins >= winsNeeded)
         {
+            endScreen.SetActive(true);
             //Debug.Log("Player 1 Win Whe Match!");
             winner.text = "Player 1 Win Whe Match!";
             StartCoroutine(winnerText());
