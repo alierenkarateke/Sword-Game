@@ -41,7 +41,7 @@ public class PlayerStats : MonoBehaviour
     int index = 0;
     foreach(Renderer r in meshRenderer)
         foreach(Material mat in r.materials)
-            originalColors[index++] = mat.color;
+            originalColors[index++] = mat.HasProperty("_BaseColor") ? mat.color : Color.white;
     }
 
     public void TakeDamge(float damage, string tag)
@@ -63,23 +63,23 @@ public class PlayerStats : MonoBehaviour
      transform.position = startPosition;   
     }
 
-    IEnumerator hitFlash()
-    {
-        foreach(Renderer r in meshRenderer)
-        {
-            foreach(Material mat in r.materials)
-               mat.color = hitFlashColor;
-        }
+IEnumerator hitFlash()
+{
+    foreach(Renderer r in meshRenderer)
+        foreach(Material mat in r.materials)
+            if(mat.HasProperty("_EmissionColor"))
+            {
+                mat.EnableKeyword("_EMISSION");
+                mat.SetColor("_EmissionColor", hitFlashColor);
+            }
 
     yield return new WaitForSeconds(hitFlashDuration);
-    int index = 0;
-        foreach(Renderer r in meshRenderer)
-        {
-            foreach(Material mat in r.materials)
-               mat.color = originalColors[index++];
-        }
-            
-    }
+    
+    foreach(Renderer r in meshRenderer)
+        foreach(Material mat in r.materials)
+            if(mat.HasProperty("_EmissionColor"))
+                mat.SetColor("_EmissionColor", Color.black);
+}
 
 
 }
