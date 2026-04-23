@@ -1,36 +1,51 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(PlayerInput))]
-//[RequireComponent(typeof(Animator))]
 
 public class PlayerController : MonoBehaviour
 {
-    
-    [SerializeField] public float moveSpeed;
-    [SerializeField] public float rotationSpeed;
-    [SerializeField] public float dodgeTime;
-    [SerializeField] public float dodgeForce;
+    #region Settings
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float rotationSpeed;
+    [Header("Dodge")]
+    [SerializeField] private float dodgeTime;
+    [SerializeField] private float dodgeForce;
+    [SerializeField] private float dodgeCooldown = 1f;
 
-    public bool isActive;
+    #endregion Settings
+
+    #region  Components
+
     private Animator animator;
     private Rigidbody rb;
     private PlayerInput playerInput;
     private InputAction moveAction;
     private InputAction dodgeAction;
-    private Vector2 moveInput;
-    public bool isDodging = false;
+    
+    #endregion Components
 
-    Vector3 moveDir;
+    #region State
+
+    public bool isDodging = false;
+    public bool isActive;
+    private Vector2 moveInput;
+    private Vector3 moveDir;
+    private float lastDodgeTime = float.NegativeInfinity;
+
+    #endregion State
+
+    #region  UnityLifecycle
 
     void Awake()
     {
         isActive = true;
     }
     
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -43,52 +58,92 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if(!isActive) return;
+        if (!isActive) return;
+        HandleDodgeInput();
+    }
 
-         if (dodgeAction.WasPressedThisFrame() && !isDodging)
+    void FixedUpdate()
+    {
+        if (!isActive) return;
+        ResetVelocity();
+        ReadMovementInput();
+        ApplyMovement();
+        ApplyRotation();
+        UpdateAnimator();
+    }
+  
+
+    #endregion UnityLifecycle
+
+    #region Dodge
+
+    IEnumerator DodgeCoroutine()
+    {
+        if (moveDir == Vector3.zero) yield break;
+        StartDodge();
+        yield return new WaitForSeconds(dodgeTime);
+        EndDodge();
+    }
+
+    #endregion Dodge
+
+    #region Methods
+
+    private void EndDodge()
+    {
+        rb.linearVelocity = Vector3.zero;
+        isDodging = false;
+        animator.SetBool("isDodging", false);
+    }
+
+    private void StartDodge()
+    {
+        lastDodgeTime = Time.time;
+        isDodging = true;
+        animator.SetBool("isDodging", true);
+        rb.AddForce(moveDir * dodgeForce, ForceMode.VelocityChange);
+    }
+
+    private void HandleDodgeInput()
+    {
+        if (dodgeAction.WasPressedThisFrame() && !isDodging && Time.time - lastDodgeTime > dodgeCooldown && moveDir != Vector3.zero)
         {
             StartCoroutine(DodgeCoroutine());
         }
     }
 
-    void FixedUpdate()
+    private void UpdateAnimator()
     {
-        if(!isActive) return;
-        
-        moveInput = moveAction.ReadValue<Vector2>();
+        animator.SetBool("isMoving", moveDir != Vector3.zero);
+    }
 
-        moveDir = new Vector3(moveInput.x, 0, moveInput.y);
-
-        rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime);
-
-        if(moveDir != Vector3.zero)
+    private void ApplyRotation()
+    {
+        if (moveDir != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.Slerp(rb.rotation, 
-            Quaternion.LookRotation(moveDir), 
+            Quaternion targetRotation = Quaternion.Slerp(rb.rotation,
+            Quaternion.LookRotation(moveDir),
             rotationSpeed * Time.fixedDeltaTime);
 
             rb.MoveRotation(targetRotation);
         }
-        animator.SetBool("isMoving", moveDir != Vector3.zero);
     }
 
-    IEnumerator DodgeCoroutine()
+    private void ApplyMovement()
     {
-        //animator.SetTrigger("dodgeTrigger");
-        isDodging = true;
-        if(moveDir != Vector3.zero)
-        {
-            rb.AddForce(moveDir * dodgeForce, ForceMode.VelocityChange);    
-        }
-        /*
-        else
-        {
-            rb.AddForce(-transform.forward * dodgeForce, ForceMode.VelocityChange);
-        }
-        */
-        yield return new WaitForSeconds(dodgeTime);
-        rb.linearVelocity = Vector3.zero;
-        isDodging = false;
+        rb.MovePosition(rb.position + moveDir * moveSpeed * Time.fixedDeltaTime);
     }
 
+    private void ReadMovementInput()
+    {
+        moveInput = moveAction.ReadValue<Vector2>();
+        moveDir = new Vector3(moveInput.x, 0, moveInput.y);
+    }
+
+    private void ResetVelocity()
+    {
+        if (!isDodging) rb.linearVelocity = Vector3.zero;
+    }
+
+    #endregion Methods
 }

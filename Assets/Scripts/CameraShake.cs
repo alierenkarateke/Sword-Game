@@ -20,12 +20,11 @@ public class CameraShake : MonoBehaviour
 
         float elapsed = 0f;
         
-
         while(elapsed < duration)
         {
             if (GameManager.Instance.matchOver)
             {
-                orgPosition = transform.localPosition; 
+                transform.localPosition = orgPosition; 
                 yield break;
             }
             
@@ -36,7 +35,6 @@ public class CameraShake : MonoBehaviour
 
             elapsed += Time.unscaledDeltaTime;
             yield return null;
-
         }
 
         transform.localPosition = orgPosition;

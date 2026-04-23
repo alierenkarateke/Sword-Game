@@ -1,27 +1,41 @@
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    [SerializeField] private int totalRound = 3;
+
+    #region Settings
+
+    [Header("Players")]
     [SerializeField] public GameObject player1;
     [SerializeField] public GameObject player2;
+
+    [Header("UI Objects")]
     [SerializeField] private TextMeshProUGUI roundText;
     [SerializeField] private TextMeshProUGUI player1Score;
     [SerializeField] private TextMeshProUGUI player2Score;
-    [SerializeField] public TextMeshProUGUI winner;
     [SerializeField] private GameObject endScreen;
+    [SerializeField] private TextMeshProUGUI winner;
 
-    public bool isRoundActive;
+    [Header("Round Number")]
+    [SerializeField] private int totalRound = 3;
+
+    #endregion Settings
+    
+    #region State
+        
     private int player1Wins = 0;
     private int player2Wins = 0;
     private int currentRound = 1;
     private int winsNeeded;
     
     public bool matchOver = false;
+
+    #endregion State
+
+    #region UnityLifecycle
 
     void Awake()
     {
@@ -32,7 +46,11 @@ public class GameManager : MonoBehaviour
         player2Score.text = "Player 2 Score : " + player2Wins;
     }
 
-    public void playerDied(string tag)
+    #endregion UnityLifecycle
+
+    #region RoundManagement
+
+    public void PlayerDied(string tag)
     {
         StartCoroutine(RoundEnd(tag));
     }
@@ -45,59 +63,74 @@ public class GameManager : MonoBehaviour
         {
             player2Wins++;
             player2Score.text = "Player 2 Score : " + player2Wins;
-            // Debug.Log(currentRound + ". Round winner is Player 2 !!!");
+            
             winner.text = currentRound + ". Round winner is Player 2 !!!";
-            StartCoroutine(winnerText());
+            StartCoroutine(ShowWinnerText());
         }
         else if(tag == "Player2")
         {
             player1Wins++;
             player1Score.text = "Player 1 Score : " + player1Wins;
-            // Debug.Log(currentRound + ". Round winner is Player 1 !!!");
+            
             winner.text = currentRound + ". Round winner is Player 1 !!!";
-            StartCoroutine(winnerText());
+            StartCoroutine(ShowWinnerText());
         }
         currentRound++;
 
         if(player2Wins >= winsNeeded)
         {
             endScreen.SetActive(true);
-            //Debug.Log("Player 2 Win Whe Match!");
+
             winner.text = "Player 2 Win Whe Match!";
-            StartCoroutine(winnerText());
+            StartCoroutine(ShowWinnerText());
             matchOver = true;
+            yield return new WaitForSecondsRealtime(2.0f);
             Time.timeScale = 0;
+
             yield break;
         }
         
         if(player1Wins >= winsNeeded)
         {
             endScreen.SetActive(true);
-            //Debug.Log("Player 1 Win Whe Match!");
+            
             winner.text = "Player 1 Win Whe Match!";
-            StartCoroutine(winnerText());
+            StartCoroutine(ShowWinnerText());
             matchOver = true;
+            yield return new WaitForSecondsRealtime(2.0f);
             Time.timeScale = 0;
-            //Debug.Log(Time.timeScale);
+            
             yield break;
         }
+
+        yield return new WaitForSecondsRealtime(1.5f);
 
         DisablePlayer();
 
         yield return new WaitForSecondsRealtime(2f);
 
-        player1.GetComponent<PlayerStats>().resetPlayer();
-        player2.GetComponent<PlayerStats>().resetPlayer();
+        player1.GetComponent<PlayerStats>().ResetPlayer();
+        player2.GetComponent<PlayerStats>().ResetPlayer();
+
+        player1.GetComponentInChildren<Animator>().SetBool("isDead", false);
+        player2.GetComponentInChildren<Animator>().SetBool("isDead", false);
+
         roundText.text = roundText.text = "Round " + currentRound;
         EnablePlayer();
     }
 
-    IEnumerator winnerText()
+    
+
+    IEnumerator ShowWinnerText()
     {
         winner.gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(2);
         winner.gameObject.SetActive(false);
     }
+
+    #endregion RoundManagement
+
+    #region PlayerManagement
 
     void DisablePlayer()
     {
@@ -109,9 +142,12 @@ public class GameManager : MonoBehaviour
 
     void EnablePlayer()
     {
+        
         player1.GetComponent<PlayerController>().isActive = true;
         player2.GetComponent<PlayerController>().isActive = true;
         player1.GetComponent<PlayerCombat>().isActive = true;
         player2.GetComponent<PlayerCombat>().isActive = true;
     }
+    #endregion PlayerManagement
+
 }

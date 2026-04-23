@@ -1,44 +1,71 @@
 using System.Collections;
-using NUnit.Framework;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class HitBoxController : MonoBehaviour
 {
-    [SerializeField] private string ownerTag;
+    #region Settings
+
+    [Header("Hit Box Values")]
     [SerializeField] private float damage;
     [SerializeField] private float hitStopDuration;
-    /*
+    [SerializeField] private float hitStopScale;
+
+    #endregion Settings
+
+    #region UnityLifecycle
+
     void OnTriggerEnter(Collider other)
     {
-    Debug.Log("Trigger algiladi: " + other.tag + " / " + other.name);
-    }
-    */
-    
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.tag != ownerTag && (other.tag == "Player1" || other.tag == "Player2"))
+        if (IsValidTarget(other))
         {
-            PlayerStats stats = other.GetComponent<PlayerStats>();
-            PlayerController playerController = other.GetComponent<PlayerController>();
-            if(stats != null && !playerController.isDodging)
-            {
-                //Debug.Log("Hit !!!");
-                StartCoroutine(doHitStop(hitStopDuration));
-                StartCoroutine(CameraShake.Instance.Shake(0.1f, 0.05f));
-                stats.TakeDamge(damage,stats.eTag);
-            }
-            
+            HandleHit(other);
         }
     }
 
-    IEnumerator doHitStop(float duration)
+    #endregion UnityLifecycle
+
+    #region Methods
+
+    IEnumerator DoHitStop(float duration)
     {
-        Time.timeScale = 0.05f;
+        if (GetMatchOver()) yield break;
+        HitStopStart();
         yield return new WaitForSecondsRealtime(duration);
-        if (!GameManager.Instance.matchOver)
-        {
-            Time.timeScale = 1.0f;
-        }  
+        HitStopEnd();
     }
+
+    private void HandleHit(Collider other)
+    {
+        PlayerStats stats = other.GetComponent<PlayerStats>();
+        PlayerController playerController = other.GetComponent<PlayerController>();
+        if (stats != null && !playerController.isDodging)
+        {
+            StartCoroutine(DoHitStop(hitStopDuration));
+            StartCoroutine(CameraShake.Instance.Shake(0.1f, 0.05f));
+            stats.TakeDamage(damage);
+        }
+    }
+
+    private bool IsValidTarget(Collider other)
+    {
+        return !other.CompareTag(gameObject.tag) && (other.CompareTag("Player1") || other.CompareTag("Player2"));
+    }
+
+    private static bool GetMatchOver()
+    {
+        return GameManager.Instance.matchOver;
+    }
+
+    private static void HitStopEnd()
+    {
+        if (!GameManager.Instance.matchOver)
+            Time.timeScale = 1.0f;
+    }
+
+    private void HitStopStart()
+    {
+        Time.timeScale = hitStopScale;
+    }
+
+    #endregion Methods
 }

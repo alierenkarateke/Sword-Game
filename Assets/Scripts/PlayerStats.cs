@@ -1,85 +1,81 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
 {
+    #region Settings
+    [Header("Position")]
+    [SerializeField] private Vector3 startPosition;
+
+    [Header("Health")]
     [SerializeField] private float currentHealth;
     [SerializeField] private float maxHealth;
-
-    [SerializeField] private float currentStamina;
-    [SerializeField] private float maxStamina;
-
-    [SerializeField] public string eTag;
-    [SerializeField] public float hitFlashDuration;
-
-    [SerializeField] public Color hitFlashColor;
-    [SerializeField] Renderer[] meshRenderer;
-
     [SerializeField] private Slider healthBar;
 
-    Color[] originalColors;
+    [Header("Hit Flash")]
+    [SerializeField] private float hitFlashDuration;
+    [SerializeField] private Color hitFlashColor;
+    [SerializeField] Renderer[] meshRenderer;
 
-    [SerializeField] private Vector3 startPosition; 
+
+    #endregion Settings
+     
+    #region UnityLifecycle
 
     void Start()
     {
         startPosition = transform.position;
         currentHealth = maxHealth;
-        currentStamina = maxStamina;
-        
         healthBar.value = 1f;
+    }
+    
+    #endregion UnityLifecycle
 
-    // tüm materialleri say
-    int totalMaterials = 0;
-    foreach(Renderer r in meshRenderer)
-        totalMaterials += r.materials.Length;
+    #region Methods
 
-    originalColors = new Color[totalMaterials];
-
-    int index = 0;
-    foreach(Renderer r in meshRenderer)
-        foreach(Material mat in r.materials)
-            originalColors[index++] = mat.HasProperty("_BaseColor") ? mat.color : Color.white;
+    IEnumerator hitFlash()
+    {
+        SetEmisson(hitFlashColor);
+        yield return new WaitForSeconds(hitFlashDuration);
+        SetEmisson(Color.black);
     }
 
-    public void TakeDamge(float damage, string tag)
+    private void SetEmisson(Color color)
+    {
+        foreach (Renderer r in meshRenderer)
+            foreach (Material mat in r.materials)
+                if (mat.HasProperty("_EmissionColor"))
+                {
+                    mat.EnableKeyword("_EMISSION");
+                    mat.SetColor("_EmissionColor", color);
+                }
+    }
+
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         healthBar.value = currentHealth / maxHealth;
-        // Debug.Log(tag + " current health = " + currentHealth);
+
         StartCoroutine(hitFlash());
-        if(currentHealth <= 0)
+        HealthControl();
+    }
+
+    private void HealthControl()
+    {
+        if (currentHealth <= 0)
         {
-            GameManager.Instance.playerDied(eTag);
+            GetComponentInChildren<Animator>().SetBool("isDead", true);
+            GameManager.Instance.PlayerDied(gameObject.tag);
         }
     }
 
-    public void resetPlayer()
+    public void ResetPlayer()
     {
      currentHealth = maxHealth;
      healthBar.value = 1f;
      transform.position = startPosition;   
     }
 
-IEnumerator hitFlash()
-{
-    foreach(Renderer r in meshRenderer)
-        foreach(Material mat in r.materials)
-            if(mat.HasProperty("_EmissionColor"))
-            {
-                mat.EnableKeyword("_EMISSION");
-                mat.SetColor("_EmissionColor", hitFlashColor);
-            }
-
-    yield return new WaitForSeconds(hitFlashDuration);
-    
-    foreach(Renderer r in meshRenderer)
-        foreach(Material mat in r.materials)
-            if(mat.HasProperty("_EmissionColor"))
-                mat.SetColor("_EmissionColor", Color.black);
-}
-
-
+    #endregion Methods
 }

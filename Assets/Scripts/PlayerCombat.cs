@@ -7,19 +7,31 @@ using UnityEngine.InputSystem;
 
 public class PlayerCombat : MonoBehaviour
 {
+    #region Settings
+    [Header("Attack")]
     [SerializeField] float hitBoxDuration;
     [SerializeField] float attackCoolDown;
-
     [SerializeField] GameObject hitBoxTrigger;
 
-    HitBoxController hitBoxController;
+    #endregion Settings
+
+    #region State
 
     public bool isActive;
+    private bool isAttacking = false;
+
+    #endregion State
+
+    #region Components
+    private HitBoxController hitBoxController;
     private Animator animator;
     private Rigidbody rb;
     private PlayerInput playerInput;
     private InputAction attackAction;
-    private bool isAttacking = false;
+    
+    #endregion Components
+
+    #region UnityLifecycle
 
     void Awake()
     {
@@ -40,22 +52,50 @@ public class PlayerCombat : MonoBehaviour
 
     void Update()
     {
-        if(!isActive) return;
-        
-        if (attackAction.WasPressedThisFrame() && !isAttacking)
-        {
-            StartCoroutine(ActivateHitBox());
-        }
+        if (!isActive) return;
+        HandleAttackInput();
     }
 
+    #endregion UnityLifecycle
+
+    #region ActiveHitBox
+
     IEnumerator ActivateHitBox()
+    {
+        StartAttack();
+        yield return new WaitForSeconds(hitBoxDuration);
+        EndHitBox();
+        yield return new WaitForSeconds(attackCoolDown);
+        EndAttack();
+    }
+
+    #endregion ActiveHitBox
+
+    #region Methods
+
+    private void EndAttack()
+    {
+        isAttacking = false;
+    }
+
+    private void EndHitBox()
+    {
+        hitBoxTrigger.SetActive(false);
+    }
+
+    private void StartAttack()
     {
         animator.SetTrigger("attackTrigger");
         isAttacking = true;
         hitBoxTrigger.SetActive(true);
-        yield return new WaitForSeconds(hitBoxDuration);
-        hitBoxTrigger.SetActive(false);
-        yield return new WaitForSeconds(attackCoolDown);
-        isAttacking = false;
     }
+
+    private void HandleAttackInput()
+    {
+        if (attackAction.WasPressedThisFrame() && !isAttacking && !GetComponent<PlayerController>().isDodging)
+        {
+            StartCoroutine(ActivateHitBox());
+        }
+    }
+    #endregion Methods
 }
