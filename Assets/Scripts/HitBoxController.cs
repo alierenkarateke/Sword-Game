@@ -58,8 +58,7 @@ public class HitBoxController : MonoBehaviour
 
     private static void HitStopEnd()
     {
-        if (!GameManager.Instance.matchOver)
-            Time.timeScale = 1.0f;
+        Time.timeScale = 1.0f;
     }
 
     private void HitStopStart()

@@ -9,11 +9,16 @@ public class PauseMenuManager : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current.escapeKey.wasPressedThisFrame && !GameManager.Instance.matchOver)
-        {
-            if(isPaused) Resume();
-            else Pause();
-        }
+       bool pausePressed = Keyboard.current.escapeKey.wasPressedThisFrame;
+    
+    if(Gamepad.current != null)
+        pausePressed |= Gamepad.current.startButton.wasPressedThisFrame;
+
+    if(pausePressed && !GameManager.Instance.matchOver)
+    {
+        if(isPaused) Resume();
+        else Pause();
+    }
     }
 
     public void Pause()
