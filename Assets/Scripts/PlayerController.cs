@@ -25,11 +25,15 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction moveAction;
     private InputAction dodgeAction;
+    private AudioSource audioSource;
+    [Header("Sound")]
+    [SerializeField] private AudioClip dodgeClip;
     
     #endregion Components
 
     #region State
-
+    
+    [Header("State")]
     public bool isDodging = false;
     public bool isActive;
     private Vector2 moveInput;
@@ -45,9 +49,9 @@ public class PlayerController : MonoBehaviour
         isActive = true;
     }
     
-
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
         animator = GetComponentInChildren<Animator>();
@@ -98,6 +102,7 @@ public class PlayerController : MonoBehaviour
 
     private void StartDodge()
     {
+        audioSource.PlayOneShot(dodgeClip);
         lastDodgeTime = Time.time;
         isDodging = true;
         animator.SetBool("isDodging", true);

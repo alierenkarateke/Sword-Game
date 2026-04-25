@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class PlayerStats : MonoBehaviour
 {
     #region Settings
+
     [Header("Position")]
     [SerializeField] private Vector3 startPosition;
 
@@ -18,6 +19,10 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private Color hitFlashColor;
     [SerializeField] Renderer[] meshRenderer;
 
+    [Header("Sound")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip painSoundClip;
+
 
     #endregion Settings
      
@@ -25,6 +30,7 @@ public class PlayerStats : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         startPosition = transform.position;
         currentHealth = maxHealth;
         healthBar.value = 1f;
@@ -54,6 +60,7 @@ public class PlayerStats : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        audioSource.PlayOneShot(painSoundClip);
         currentHealth -= damage;
         healthBar.value = currentHealth / maxHealth;
 

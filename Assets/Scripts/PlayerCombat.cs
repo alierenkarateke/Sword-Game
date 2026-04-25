@@ -17,6 +17,7 @@ public class PlayerCombat : MonoBehaviour
 
     #region State
 
+    [Header("State")]
     public bool isActive;
     private bool isAttacking = false;
 
@@ -28,6 +29,9 @@ public class PlayerCombat : MonoBehaviour
     private Rigidbody rb;
     private PlayerInput playerInput;
     private InputAction attackAction;
+    private AudioSource audioSource;
+    [Header("Sound")]
+    [SerializeField] private AudioClip swordSwingClip;
     
     #endregion Components
 
@@ -41,6 +45,7 @@ public class PlayerCombat : MonoBehaviour
     
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
         animator = GetComponentInChildren<Animator>();
@@ -85,6 +90,7 @@ public class PlayerCombat : MonoBehaviour
 
     private void StartAttack()
     {
+        audioSource.PlayOneShot(swordSwingClip);
         animator.SetTrigger("attackTrigger");
         isAttacking = true;
         hitBoxTrigger.SetActive(true);
